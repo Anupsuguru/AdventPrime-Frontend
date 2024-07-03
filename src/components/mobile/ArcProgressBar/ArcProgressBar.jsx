@@ -5,21 +5,21 @@ export default class ArcProgressBar extends React.Component {
     state = {
         progress: 1.0,
         customText: [
-            { text: "8/10", size: "24px", color: "#33BBEA", x: 100, y: 94 },
-            { text: "completed", size: "14px", color: "#33BBEA", x: 100, y: 122 }
+            { text: "08", size: "24px", color: "#33BBEA", x: 100, y: 94 },
+            { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122 }
         ]
     };
 
     render() {
         const { progress } = this.props;
-        const { customText } = this.state;
+        const { customText } = this.props;
         const arcFillColor = { gradient: ["#0065b3", "#3bcaf3"] };
         return (
             <>
                 <div
                     style={{
-                        height: 100,
-                        width: 100,
+                        height: 200,
+                        width: 200,
                         borderRadius: 50,
                         position: "absolute",
                         left: 58,
@@ -45,7 +45,7 @@ export default class ArcProgressBar extends React.Component {
                     //     console.log("animationEnd", progress, text);
                     }}
                     // TODO: change colour of empty based on scheme
-                    emptyColor={"#000000"}
+                    emptyColor={"#09232d"}
                 />
             </>
         );

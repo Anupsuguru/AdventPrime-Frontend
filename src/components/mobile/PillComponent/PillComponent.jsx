@@ -4,10 +4,9 @@ import "./PillComponent.css"
 export default function PillComponent({content}){
     return(
         <>
-            <div className="pill" style={{backgroundColor: content.color}}>
-                <h3 className="text-xl font-bold pillh3" >{content.name}</h3>
-
-            </div>
+            <span className="inline-flex items-center px-10 py-3 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+          AI
+        </span>
         </>
     )
 }
