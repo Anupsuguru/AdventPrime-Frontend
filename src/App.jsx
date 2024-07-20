@@ -21,14 +21,14 @@ function App() {
     return (
         <>
 
-                <div className="h-dvh w-dvw relative bg-white dark:bg-black ">
-                    <div className="h-[80%] w-dvw relative">
-                        <Outlet/>
-                    </div>
-                    <div className="h-[10%] w-dvw fixed bottom-0">
-                        <Navbar/>
-                    </div>
+            <div className="h-dvh w-dvw relative bg-white dark:bg-black ">
+                <div className="min-h-[90%] max-h-[90%] h-[90%] w-dvw relative overflow-y-auto no-scrollbar">
+                    <Outlet/>
                 </div>
+                <div className="h-[10%] w-dvw fixed bottom-0">
+                    <Navbar/>
+                </div>
+            </div>
 
         </>
     )
