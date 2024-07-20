@@ -1,4 +1,4 @@
-const mockreq = {
+ const mockreq = {
     "studentid":110126034
 }
 export const homemock ={
@@ -7,25 +7,34 @@ export const homemock ={
     // ids
     "scheduled":[
         {
+            "id":1,
             "title": "Sample title",
-            "by":"Sample name",
-            "location":"300 Oulette",
+            "conductor":"Sample name",
+            "address":"300 Oulette",
             "time":"14:00 - 15:00",
-            "date":"mm/dd/yyyy",
+            "day":"Monday",
+            "datenum":"15",
+            "datemo":"July 2024",
         },
         {
+            "id":2,
             "title": "Sample title",
-            "by":"Sample name",
-            "location":"300 Oulette",
+            "conductor":"Sample name",
+            "address":"300 Oulette",
             "time":"14:00 - 15:00",
-            "date":"mm/dd/yyyy",
+            "day":"Monday",
+            "datenum":"15",
+            "datemo":"July 2024",
         },
         {
+            "id":3,
             "title": "Sample title",
-            "by":"Sample name",
-            "location":"300 Oulette",
+            "conductor":"Sample name",
+            "address":"300 Oulette",
             "time":"14:00 - 15:00",
-            "date":"mm/dd/yyyy",
+            "day":"Monday",
+            "datenum":"15",
+            "datemo":"July 2024",
         }
     ],
     "preferences":[
