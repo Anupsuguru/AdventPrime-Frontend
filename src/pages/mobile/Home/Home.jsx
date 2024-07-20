@@ -2,15 +2,10 @@ import ArcProgressBar from "../../../components/mobile/ArcProgressBar/ArcProgres
 import {homemock} from "../../../mockup/homemock.jsx";
 import logo from"../../../assets/logo.png";
 import TicketComponent from "../../../components/mobile/TicketComponent";
-import PillComponent from "../../../components/mobile/PillComponent";
-import RelevantItemCard from "../../../components/mobile/RelevantItemCard/RelevantItemCard.jsx";
 import {IconBell} from "@tabler/icons-react";
-import {useEffect, useRef} from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import {loginRequest} from "../../../auth/authConfig.jsx";
-import {useMsal} from "@azure/msal-react";
 
 export function Home(){
     const customText= [
@@ -28,9 +23,9 @@ export function Home(){
 
     // Till here
 
-    
+
     var settings = {
-        dots: false,
+        dots: true,
         arrows: false,
         infinite: false,
         speed: 500,
@@ -112,7 +107,7 @@ export function Home(){
                             <span>AI</span>
                         </div>
                     </div>
-                    <div >
+                    <div>
                         <div
                             className="inline-flex items-center  px-14 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#4285f4] dark:text-black ">
                             <span>Cloud</span>
@@ -124,7 +119,7 @@ export function Home(){
                             <span>Data</span>
                         </div>
                     </div>
-                    <div >
+                    <div>
                         <div
                             className="inline-flex items-center  px-12 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#34a853] dark:text-black ">
                             <span>Python</span>
@@ -132,6 +127,7 @@ export function Home(){
                     </div>
 
                 </div>
+
             </div>
 
         </>
