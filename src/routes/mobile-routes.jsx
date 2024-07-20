@@ -9,6 +9,7 @@ import {redirect} from "react-router-dom";
 import React from "react";
 import {InteractionType} from "@azure/msal-browser";
 
+
 function Authcheck(){
     // const { instance, inProgress } = useMsal();
     //     // const isAuthenticated = useIsAuthenticated();
@@ -62,4 +63,5 @@ export const mobileRoutes = [
         element: <Signin/>,
         errorElement: <div> This error</div>
     },
+
 ];
