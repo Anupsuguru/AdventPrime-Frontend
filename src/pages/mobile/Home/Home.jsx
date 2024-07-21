@@ -6,6 +6,7 @@ import {IconBell} from "@tabler/icons-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+
 import ListCard from "../../../components/mobile/ListCard/index.jsx";
 
 
@@ -135,7 +136,6 @@ export function Home(){
 
                 </div>
 
-
                 <div className="ml-2.5 mt-1/20 mb-[2.5%]">
                     <h3 className="text-lg sarala-bold dark:text-white">You might be interested in</h3>
                 </div>
@@ -150,6 +150,7 @@ export function Home(){
                         />
                     ))}
                 </div>
+
             </div>
 
         </>
