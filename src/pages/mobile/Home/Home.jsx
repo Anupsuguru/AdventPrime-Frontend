@@ -6,12 +6,19 @@ import {IconBell} from "@tabler/icons-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import ListCard from "../../../components/mobile/ListCard/index.jsx";
+
 
 export function Home(){
     const customText= [
         { text: "08", size: "32px", color: "#33BBEA", x: 100, y: 94, font:"Sarala" },
         { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122, font:"Sarala" }
     ]
+    const cardDetails = [
+        { color: '#FF7F50', title: 'Introduction to Spark', conductor: 'Ali', date: 'Aug 12' },
+        { color: '#32CD32', title: 'Advanced Data Clustering...', conductor: 'Ali', date: 'Aug 20' },
+        { color: '#1E90FF', title: 'Beginners guide to Azure', conductor: 'Ali', date: 'Aug 20' },
+    ];
 
     // TODO: Whoever reads this, Delete this code ASAP
     // const { instance, accounts } = useMsal();
@@ -128,6 +135,21 @@ export function Home(){
 
                 </div>
 
+
+                <div className="ml-2.5 mt-1/20 mb-[2.5%]">
+                    <h3 className="text-lg sarala-bold dark:text-white">You might be interested in</h3>
+                </div>
+                <div className="p-4 space-y-4">
+                    {cardDetails.map((detail, index) => (
+                        <ListCard
+                            key={index}
+                            color={detail.color}
+                            title={detail.title}
+                            conductor={detail.conductor}
+                            date={detail.date}
+                        />
+                    ))}
+                </div>
             </div>
 
         </>

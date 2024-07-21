@@ -1,0 +1,36 @@
+:root {
+    --notch-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --notch-color: black;
+    }
+}
+
+.ticket {
+    position: relative;
+}
+
+.ticket::before,
+.ticket::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--notch-color); /* Match the background color to make it look like a cut-out */
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.ticket::before {
+    left: -10px; /* Adjust based on your needs */
+    top: 50%;
+    transform: translateY(-60%);
+}
+
+.ticket::after {
+    right: -10px; /* Adjust based on your needs */
+    top: 50%;
+    transform: translateY(-60%);
+}
