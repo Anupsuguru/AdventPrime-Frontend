@@ -1,13 +1,14 @@
 import './TicketComponent.css';
 import { IconClock, IconMapPinFilled} from "@tabler/icons-react";
 import {TicketDetails} from "../../../models/TicketDetails.jsx";
+import "./ticket.css";
 
 
 export default function TicketComponent({props}) {
     let details = new TicketDetails(props);
     return(
         <>
-            <div className="relative h-full w-[95%] m-[2%] bg-gradient-to-b from-indigo-blue-card to-sky-blue-card rounded-xl ">
+            <div className="relative h-full w-[95%] m-[2%] bg-gradient-to-b from-indigo-blue-card to-sky-blue-card rounded-xl ticket">
                 <div className="relative pt-1.5 pl-3.5 min-h-fit min-w-fit">
                     <h1 className="text-xl sarala-bold text-white">{details.title}</h1>
                     <h3 className="text-white ">by {details.conductor}</h3>

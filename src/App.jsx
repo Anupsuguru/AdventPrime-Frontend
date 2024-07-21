@@ -3,8 +3,6 @@ import './App.css'
 import Navbar from "./components/mobile/Navbar/Navbar.jsx";
 import {Outlet} from "react-router-dom";
 
-
-
 // const msalInstance = new PublicClientApplication(msalConfig);
 
 function App() {
