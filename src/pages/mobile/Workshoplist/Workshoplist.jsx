@@ -3,6 +3,7 @@ import WorkshopCard from "../../../components/mobile/WorkshopCard/WorkshopCard";
 import { getWorkshops } from "./WorkshoplistApi";
 import WorkshopFilterBottomSheet from "./WorkshopFilterBottomSheet";
 import WorkshopRegistrationBottomSheet from "./WorkshopRegistrationBottomSheet";
+import WorkshopConfirmationBottomSheet from "./WorkshopConfirmationBottomSheet";
 // import axios from "axios";
 
 export function Workshoplist() {
@@ -15,12 +16,15 @@ export function Workshoplist() {
     sortByLocation: false,
     showPreferredOnly: false,
   });
-
+  const [isDetailsSheetVisible, setIsDetailsSheetVisible] = useState(false);
   const [isRegistrationSheetVisible, setIsRegistrationSheetVisible] =
     useState(false);
   const [isWaitlisted, setIsWaitlisted] = useState(false);
 
-  const handleRegisterClick = () => {
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
+
+  const handleRegisterClick = (workshop) => {
+    setSelectedWorkshop(workshop);
     setIsRegistrationSheetVisible(true);
   };
 
@@ -29,6 +33,7 @@ export function Workshoplist() {
     // ...
 
     setIsRegistrationSheetVisible(false);
+    setIsDetailsSheetVisible(true);
   };
 
   const handleToggleWaitlist = () => {
@@ -36,16 +41,26 @@ export function Workshoplist() {
   };
 
   useEffect(() => {
-    const workshopData = getWorkshops();
-    setWorkshops(workshopData);
-    setFilteredWorkshops(workshopData);
     // TODO: Uncomment the code below when the API endpoint is ready
-    // const fetchWorkshops = async () => {
-    //   const data = await getWorkshops();
-    //   setWorkshops(data);
-    // };
+    const fetchWorkshops = async () => {
+      try {
+        const data = await getWorkshops();
+        if (Array.isArray(data)) {
+          setWorkshops(data);
+          setFilteredWorkshops(data);
+        } else {
+          console.error("getWorkshops did not return an array:", data);
+          setWorkshops([]);
+          setFilteredWorkshops([]);
+        }
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+        setWorkshops([]);
+        setFilteredWorkshops([]);
+      }
+    };
 
-    // fetchWorkshops();
+    fetchWorkshops();
     // Replace with your API call
     // axios.get("/api/workshops").then((response) => {
     //   setWorkshops(response.data);
@@ -57,31 +72,35 @@ export function Workshoplist() {
   }, [filters]);
 
   const applyFilters = () => {
-    // let updatedWorkshops = [...workshops];
-    // const noFiltersSelected =
-    //   !filters.sortAlphabetically &&
-    //   !filters.sortByDate &&
-    //   //   !filters.sortByLocation &&
-    //   !filters.showPreferredOnly;
-    // if (noFiltersSelected) {
-    //   setFilteredWorkshops(workshops);
-    //   return;
-    // }
-    // if (filters.sortAlphabetically) {
-    //   updatedWorkshops.sort((a, b) => a.title.localeCompare(b.title));
-    // }
-    // if (filters.sortByDate) {
-    //   updatedWorkshops.sort((a, b) => new Date(a.date) - new Date(b.date));
-    // }
-    // if (filters.sortByLocation) {
-    //   updatedWorkshops.sort((a, b) => a.location.localeCompare(b.location)); // Assuming there's a location field
-    // }
-    // if (filters.showPreferredOnly) {
-    //   updatedWorkshops = updatedWorkshops.filter(
-    //     (workshop) => workshop.tags.includes("Preferred") // Assuming preferred workshops are marked
-    //   );
-    // }
-    // setFilteredWorkshops(updatedWorkshops);
+    let updatedWorkshops = [...workshops];
+
+    if (filters.sortAlphabetically) {
+      updatedWorkshops.sort((a, b) =>
+        a.workshop_name.localeCompare(b.workshop_name)
+      );
+    }
+
+    if (filters.sortByDate) {
+      updatedWorkshops.sort(
+        (a, b) => new Date(a.workshop_date) - new Date(b.workshop_date)
+      );
+    }
+
+    // Assuming there's a location field
+    if (filters.sortByLocation) {
+      updatedWorkshops.sort((a, b) =>
+        a.workshop_location.localeCompare(b.workshop_location)
+      );
+    }
+
+    // Assuming preferred workshops are marked with a 'preferred' tag
+    if (filters.showPreferredOnly) {
+      updatedWorkshops = updatedWorkshops.filter((workshop) =>
+        workshop.tags.includes("preferred")
+      );
+    }
+
+    setFilteredWorkshops(updatedWorkshops);
   };
 
   return (
@@ -108,16 +127,18 @@ export function Workshoplist() {
         </div>
       </div>
       <div className="space-y-4">
-        {filteredWorkshops.map((workshop, index) => (
+        {filteredWorkshops?.map((workshop, index) => (
           <WorkshopCard
             key={index}
-            title={workshop.title}
-            date={workshop.date}
+            title={workshop.workshop_name}
+            date={workshop.workshop_date}
             description={workshop.description}
-            tags={workshop.tags}
+            tags={workshop.category}
+            location={workshop.workshop_location}
             onRegister={handleRegisterClick}
           />
         ))}
+        {selectedWorkshop && <h2>{selectedWorkshop.workshop_name}</h2>}
       </div>
       <div className="h-28"></div>{" "}
       <WorkshopFilterBottomSheet
@@ -131,6 +152,12 @@ export function Workshoplist() {
         onRegister={handleRegister}
         onToggleWaitlist={handleToggleWaitlist}
         isWaitlisted={isWaitlisted}
+        selectedWorkshop={selectedWorkshop}
+      />
+      <WorkshopConfirmationBottomSheet
+        isVisible={isDetailsSheetVisible}
+        onClose={() => setIsDetailsSheetVisible(false)}
+        workshop={selectedWorkshop}
       />
     </div>
   );

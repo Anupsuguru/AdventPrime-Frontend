@@ -5,7 +5,9 @@ const WorkshopRegistrationBottomSheet = ({
   isVisible,
   onClose,
   onRegister,
+  selectedWorkshop,
 }) => {
+  console.log(selectedWorkshop?.workshop_name);
   const [isWaitlisted, setIsWaitlisted] = useState(false);
 
   const handleToggleWaitlist = () => {
