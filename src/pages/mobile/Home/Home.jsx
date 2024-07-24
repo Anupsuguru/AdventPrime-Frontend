@@ -8,6 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 import ListCard from "../../../components/mobile/ListCard/index.jsx";
+import {loginRequest} from "../../../auth/authConfig.jsx";
+import {useMsal} from "@azure/msal-react";
 
 
 export function Home(){
@@ -22,12 +24,12 @@ export function Home(){
     ];
 
     // TODO: Whoever reads this, Delete this code ASAP
-    // const { instance, accounts } = useMsal();
-    // console.log(instance
-    //     .acquireTokenSilent({
-    //         ...loginRequest,
-    //         account: accounts[0],
-    //     }));
+    const { instance, accounts } = useMsal();
+    console.log(instance
+        .acquireTokenSilent({
+            ...loginRequest,
+            account: accounts[0],
+        }));
 
     // Till here
 

@@ -8,6 +8,7 @@ import {useIsAuthenticated, useMsal} from "@azure/msal-react";
 import {redirect} from "react-router-dom";
 import React from "react";
 import {InteractionType} from "@azure/msal-browser";
+import QrScreen from "../pages/mobile/QrScreen/QrScreen.jsx";
 
 
 function Authcheck(){
@@ -59,9 +60,13 @@ export const mobileRoutes = [
         element: <Profile/>
     },
     {
-        path: "/signin",
-        element: <Signin/>,
-        errorElement: <div> This error</div>
-    },
+        path: "/qrscreen",
+        element: <QrScreen/>
+    }
+    // {
+    //     path: "/signin",
+    //     element: <Signin/>,
+    //     errorElement: <div> This error</div>
+    // },
 
 ];

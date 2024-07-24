@@ -10,7 +10,7 @@ export default function Navbar(){
                         {({isActive}) => isActive ? <IconHome stroke={2} size={48} color={"#ffffff"}/> : <IconHome stroke={1} size={48} color={"#ffffff"} /> }
                         {/*<HomeIcon className="size-[75%] text-white"/>*/}
                     </NavLink>
-                    <NavLink to="/book/1" className="flex flex-col items-center justify-center">
+                    <NavLink to="/qrscreen" className="flex flex-col items-center justify-center">
                         {({isActive}) => isActive ? <IconQrcode stroke={2} size={48} color={"#ffffff"}/> : <IconQrcode stroke={1} size={48} color={"#ffffff"} /> }
                         {/*<QrCodeIcon className="size-[75%]  text-gray-500"/>*/}
                     </NavLink>
