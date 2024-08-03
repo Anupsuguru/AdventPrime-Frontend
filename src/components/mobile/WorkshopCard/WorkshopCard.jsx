@@ -10,10 +10,12 @@ const WorkshopCard = ({
   onRegister,
 }) => {
   // console.log(tags);
+
   return (
     <div className="bg-[#282828] text-white p-4 mb-4 rounded-lg">
       <h2 className="text-xl font-semibold">{title}</h2>
       <p className="text-gray-400">{date}</p>
+
       <p className="text-gray-400">{location}</p> {/* Add this line */}
       <div className="flex space-x-2 my-2">
         <span
@@ -27,6 +29,7 @@ const WorkshopCard = ({
         >
           {tags}
         </span>
+
       </div>
       <p className="text-gray-300">{description}</p>
       <div className="flex justify-between items-center mt-4">

@@ -16,21 +16,21 @@ export default class ArcProgressBar extends React.Component {
         const arcFillColor = { gradient: ["#0065b3", "#3bcaf3"] };
         return (
             <>
-                <div
-                    style={{
-                        height: 200,
-                        width: 200,
-                        borderRadius: 50,
-                        position: "absolute",
-                        left: 58,
-                        marginTop: 50,
-                        boxShadow: `1px 3px 1px rgba(0,0,0,0.1)`,
-                        //boxShadow: "-2px 2px  rgba(0,0,0,0.1)",
-                        //mozBoxShadow: "0 0 5px  5px rgba(0,0,0,0.3)",
-                        WebkitBoxShadow: "0 3px 5px 1px rgba(0,0,0,0.1)"
-                        //oBoxShadow: "0 0 2px 2px rgba(0,0,0,0.3)"
-                    }}
-                ></div>
+                {/*<div*/}
+                {/*    style={{*/}
+                {/*        height: 200,*/}
+                {/*        width: 200,*/}
+                {/*        borderRadius: 50,*/}
+                {/*        position: "absolute",*/}
+                {/*        left: 58,*/}
+                {/*        marginTop: 50,*/}
+                {/*        boxShadow: `1px 3px 1px rgba(0,0,0,0.1)`,*/}
+                {/*        //boxShadow: "-2px 2px  rgba(0,0,0,0.1)",*/}
+                {/*        //mozBoxShadow: "0 0 5px  5px rgba(0,0,0,0.3)",*/}
+                {/*        WebkitBoxShadow: "0 3px 5px 1px rgba(0,0,0,0.1)"*/}
+                {/*        //oBoxShadow: "0 0 2px 2px rgba(0,0,0,0.3)"*/}
+                {/*    }}*/}
+                {/*></div>*/}
                 <ArcProgress
                     thickness={20}
                     fillColor={arcFillColor}

@@ -119,6 +119,7 @@ export function Workshoplist() {
             <i className="fas fa-filter"></i>
           </button>
           {/* <button className="bg-[#282828] p-2 rounded-full">
+
             <i className="fas fa-calendar"></i>
           </button>
           <button className="bg-[#282828] p-2 rounded-full">
@@ -161,4 +162,5 @@ export function Workshoplist() {
       />
     </div>
   );
+
 }
