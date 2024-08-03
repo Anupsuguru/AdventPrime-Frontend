@@ -16,6 +16,8 @@
     "@heroicons/react": "^2.1.4",
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@tabler/icons-react": "^3.6.0",
+    "axios": "^1.7.2",
+    "react-draggable": "^4.4.6",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
     "https-localhost": "^4.7.1",

@@ -1,26 +1,35 @@
 import React from "react";
-// import WorkshopRegistrationBottomSheet from "../../../pages/mobile/Workshoplist/WorkshopRegistrationBottomSheet";
-// import WorkshopRegistrationBottomSheet from "../WorkshopRegistration/WorkshopRegistrationBottomSheet.jsx";
-const WorkshopCard = ({ title, date, description, tags, onRegister }) => {
+import WorkshopRegistrationBottomSheet from "../../../pages/mobile/Workshoplist/WorkshopRegistrationBottomSheet";
+
+const WorkshopCard = ({
+  title,
+  date,
+  description,
+  tags,
+  location,
+  onRegister,
+}) => {
+  // console.log(tags);
+
   return (
     <div className="bg-[#282828] text-white p-4 mb-4 rounded-lg">
       <h2 className="text-xl font-semibold">{title}</h2>
       <p className="text-gray-400">{date}</p>
+
+      <p className="text-gray-400">{location}</p> {/* Add this line */}
       <div className="flex space-x-2 my-2">
-        {tags.map((tag, index) => (
-          <span
-            key={index}
-            className={`${
-              tag === "Tech 1"
-                ? "bg-yellow-400"
-                : tag === "Tech 2"
-                ? "bg-orange-400"
-                : "bg-green-400"
-            } text-black py-1 px-2 rounded-full`}
-          >
-            {tag}
-          </span>
-        ))}
+        <span
+          className={`${
+            tags === "Tech 1"
+              ? "bg-yellow-400"
+              : tags === "Tech 2"
+              ? "bg-orange-400"
+              : "bg-green-400"
+          } text-black py-1 px-2 rounded-full`}
+        >
+          {tags}
+        </span>
+
       </div>
       <p className="text-gray-300">{description}</p>
       <div className="flex justify-between items-center mt-4">

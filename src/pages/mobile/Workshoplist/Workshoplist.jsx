@@ -1,139 +1,166 @@
 import React, { useEffect, useState } from "react";
-import WorkshopCard from "../../../../../../AdventPrime/AdventPrime/src/components/mobile/WorkshopCard/WorkshopCard";
-import { getWorkshops } from "../../../mockup/WorkshoplistApi.jsx";
-// import WorkshopFilterBottomSheet from "./WorkshopFilterBottomSheet";
-// import WorkshopRegistrationBottomSheet from "./WorkshopRegistrationBottomSheet";
-import WorkshopFilterBottomSheet from "../../../../../../AdventPrime/AdventPrime/src/components/mobile/WorkshopFilter/WorkshopFilterBottomSheet.jsx";
-import WorkshopRegistrationBottomSheet from "../../../../../../AdventPrime/AdventPrime/src/components/mobile/WorkshopRegistration/WorkshopRegistrationBottomSheet.jsx";
+import WorkshopCard from "../../../components/mobile/WorkshopCard/WorkshopCard";
+import { getWorkshops } from "./WorkshoplistApi";
+import WorkshopFilterBottomSheet from "./WorkshopFilterBottomSheet";
+import WorkshopRegistrationBottomSheet from "./WorkshopRegistrationBottomSheet";
+import WorkshopConfirmationBottomSheet from "./WorkshopConfirmationBottomSheet";
 // import axios from "axios";
 
 export function Workshoplist() {
-    const [workshops, setWorkshops] = useState([]);
-    const [filteredWorkshops, setFilteredWorkshops] = useState([]);
-    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-    const [filters, setFilters] = useState({
-        sortAlphabetically: false,
-        sortByDate: false,
-        sortByLocation: false,
-        showPreferredOnly: false,
-    });
+  const [workshops, setWorkshops] = useState([]);
+  const [filteredWorkshops, setFilteredWorkshops] = useState([]);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [filters, setFilters] = useState({
+    sortAlphabetically: false,
+    sortByDate: false,
+    sortByLocation: false,
+    showPreferredOnly: false,
+  });
+  const [isDetailsSheetVisible, setIsDetailsSheetVisible] = useState(false);
+  const [isRegistrationSheetVisible, setIsRegistrationSheetVisible] =
+    useState(false);
+  const [isWaitlisted, setIsWaitlisted] = useState(false);
 
-    const [isRegistrationSheetVisible, setIsRegistrationSheetVisible] =
-        useState(false);
-    const [isWaitlisted, setIsWaitlisted] = useState(false);
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
 
-    const handleRegisterClick = () => {
-        setIsRegistrationSheetVisible(true);
+  const handleRegisterClick = (workshop) => {
+    setSelectedWorkshop(workshop);
+    setIsRegistrationSheetVisible(true);
+  };
+
+  const handleRegister = (isWaitlisted) => {
+    // Implement your registration logic here
+    // ...
+
+    setIsRegistrationSheetVisible(false);
+    setIsDetailsSheetVisible(true);
+  };
+
+  const handleToggleWaitlist = () => {
+    setIsWaitlisted(!isWaitlisted);
+  };
+
+  useEffect(() => {
+    // TODO: Uncomment the code below when the API endpoint is ready
+    const fetchWorkshops = async () => {
+      try {
+        const data = await getWorkshops();
+        if (Array.isArray(data)) {
+          setWorkshops(data);
+          setFilteredWorkshops(data);
+        } else {
+          console.error("getWorkshops did not return an array:", data);
+          setWorkshops([]);
+          setFilteredWorkshops([]);
+        }
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+        setWorkshops([]);
+        setFilteredWorkshops([]);
+      }
     };
 
-    const handleRegister = (isWaitlisted) => {
-        // Implement your registration logic here
-        // ...
+    fetchWorkshops();
+    // Replace with your API call
+    // axios.get("/api/workshops").then((response) => {
+    //   setWorkshops(response.data);
+    // });
+  }, []);
 
-        setIsRegistrationSheetVisible(false);
-    };
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
 
-    const handleToggleWaitlist = () => {
-        setIsWaitlisted(!isWaitlisted);
-    };
+  const applyFilters = () => {
+    let updatedWorkshops = [...workshops];
 
-    useEffect(() => {
-        const workshopData = getWorkshops();
-        setWorkshops(workshopData);
-        setFilteredWorkshops(workshopData);
-        // TODO: Uncomment the code below when the API endpoint is ready
-        // const fetchWorkshops = async () => {
-        //   const data = await getWorkshops();
-        //   setWorkshops(data);
-        // };
+    if (filters.sortAlphabetically) {
+      updatedWorkshops.sort((a, b) =>
+        a.workshop_name.localeCompare(b.workshop_name)
+      );
+    }
 
-        // fetchWorkshops();
-        // Replace with your API call
-        // axios.get("/api/workshops").then((response) => {
-        //   setWorkshops(response.data);
-        // });
-    }, []);
+    if (filters.sortByDate) {
+      updatedWorkshops.sort(
+        (a, b) => new Date(a.workshop_date) - new Date(b.workshop_date)
+      );
+    }
 
-    useEffect(() => {
-        applyFilters();
-    }, [filters]);
+    // Assuming there's a location field
+    if (filters.sortByLocation) {
+      updatedWorkshops.sort((a, b) =>
+        a.workshop_location.localeCompare(b.workshop_location)
+      );
+    }
 
-    const applyFilters = () => {
-        // let updatedWorkshops = [...workshops];
-        // const noFiltersSelected =
-        //   !filters.sortAlphabetically &&
-        //   !filters.sortByDate &&
-        //   //   !filters.sortByLocation &&
-        //   !filters.showPreferredOnly;
-        // if (noFiltersSelected) {
-        //   setFilteredWorkshops(workshops);
-        //   return;
-        // }
-        // if (filters.sortAlphabetically) {
-        //   updatedWorkshops.sort((a, b) => a.title.localeCompare(b.title));
-        // }
-        // if (filters.sortByDate) {
-        //   updatedWorkshops.sort((a, b) => new Date(a.date) - new Date(b.date));
-        // }
-        // if (filters.sortByLocation) {
-        //   updatedWorkshops.sort((a, b) => a.location.localeCompare(b.location)); // Assuming there's a location field
-        // }
-        // if (filters.showPreferredOnly) {
-        //   updatedWorkshops = updatedWorkshops.filter(
-        //     (workshop) => workshop.tags.includes("Preferred") // Assuming preferred workshops are marked
-        //   );
-        // }
-        // setFilteredWorkshops(updatedWorkshops);
-    };
+    // Assuming preferred workshops are marked with a 'preferred' tag
+    if (filters.showPreferredOnly) {
+      updatedWorkshops = updatedWorkshops.filter((workshop) =>
+        workshop.tags.includes("preferred")
+      );
+    }
 
-    return (
-        <div className="min-h-screen bg-[#000000] text-white p-4">
-            <link
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-            />
-            <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-bold">Explore Workshops</h1>
-                <div className="flex items-center space-x-2">
-                    <button
-                        className="bg-[#282828] p-2 rounded-full"
-                        onClick={() => setIsBottomSheetVisible(true)}
-                    >
-                        <i className="fas fa-filter"></i>
-                    </button>
-                    {/* <button className="bg-[#282828] p-2 rounded-full">
+    setFilteredWorkshops(updatedWorkshops);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#000000] text-white p-4">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      />
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Explore Workshops</h1>
+        <div className="flex items-center space-x-2">
+          <button
+            className="bg-[#282828] p-2 rounded-full"
+            onClick={() => setIsBottomSheetVisible(true)}
+          >
+            <i className="fas fa-filter"></i>
+          </button>
+          {/* <button className="bg-[#282828] p-2 rounded-full">
+
             <i className="fas fa-calendar"></i>
           </button>
           <button className="bg-[#282828] p-2 rounded-full">
             <i className="fas fa-check-circle"></i>
           </button> */}
-                </div>
-            </div>
-            <div className="space-y-4">
-                {filteredWorkshops.map((workshop, index) => (
-                    <WorkshopCard
-                        key={index}
-                        title={workshop.title}
-                        date={workshop.date}
-                        description={workshop.description}
-                        tags={workshop.tags}
-                        onRegister={handleRegisterClick}
-                    />
-                ))}
-            </div>
-            <div className="h-28"></div>{" "}
-            <WorkshopFilterBottomSheet
-                isVisible={isBottomSheetVisible}
-                onClose={() => setIsBottomSheetVisible(false)}
-                onApply={(filters) => setFilters(filters)}
-            />
-            <WorkshopRegistrationBottomSheet
-                isVisible={isRegistrationSheetVisible}
-                onClose={() => setIsRegistrationSheetVisible(false)}
-                onRegister={handleRegister}
-                onToggleWaitlist={handleToggleWaitlist}
-                isWaitlisted={isWaitlisted}
-            />
         </div>
-    );
+      </div>
+      <div className="space-y-4">
+        {filteredWorkshops?.map((workshop, index) => (
+          <WorkshopCard
+            key={index}
+            title={workshop.workshop_name}
+            date={workshop.workshop_date}
+            description={workshop.description}
+            tags={workshop.category}
+            location={workshop.workshop_location}
+            onRegister={handleRegisterClick}
+          />
+        ))}
+        {selectedWorkshop && <h2>{selectedWorkshop.workshop_name}</h2>}
+      </div>
+      <div className="h-28"></div>{" "}
+      <WorkshopFilterBottomSheet
+        isVisible={isBottomSheetVisible}
+        onClose={() => setIsBottomSheetVisible(false)}
+        onApply={(filters) => setFilters(filters)}
+      />
+      <WorkshopRegistrationBottomSheet
+        isVisible={isRegistrationSheetVisible}
+        onClose={() => setIsRegistrationSheetVisible(false)}
+        onRegister={handleRegister}
+        onToggleWaitlist={handleToggleWaitlist}
+        isWaitlisted={isWaitlisted}
+        selectedWorkshop={selectedWorkshop}
+      />
+      <WorkshopConfirmationBottomSheet
+        isVisible={isDetailsSheetVisible}
+        onClose={() => setIsDetailsSheetVisible(false)}
+        workshop={selectedWorkshop}
+      />
+    </div>
+  );
+
 }
