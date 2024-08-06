@@ -1,8 +1,9 @@
 // TODO: install Axios Later
 // TODO: make this async when the api endpoint is ready
 import axios from "axios";
+import {useMsal} from "@azure/msal-react";
 
-export const getWorkshops = async () => {
+export const getWorkshops = async (accesstoken) => {
   // return [
   //   {
   //     title: "Introduction to Spark",
@@ -64,13 +65,9 @@ export const getWorkshops = async () => {
   // ];
 
   // TODO: Uncomment the code below when the api endpoint is ready
-
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+accesstoken;
   try {
-    const response = await axios.get("http://127.0.0.1:8000/workshops", {
-      headers: {
-        studentEmail: "muniyap@uwindsor.ca",
-      },
-    });
+    const response = await axios.get(import.meta.env.VITE_API_URL+"workshops");
     if (response.data.message === "Success") {
       console.log(response.data.content);
       return response.data.content;

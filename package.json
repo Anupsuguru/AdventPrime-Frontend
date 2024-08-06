@@ -21,6 +21,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@tabler/icons-react": "^3.6.0",
+    "@yudiel/react-qr-scanner": "^2.0.4",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
