@@ -46,7 +46,17 @@ export default {
       colors: {
         'indigo-blue-card': '#000046',
         'sky-blue-card': '#1D8AA9'
-      }
+      },
+      keyframes: {
+        click: {
+          '0%': {transform: 'scale(1)'},
+          '50%': {transform: 'scale(0.95)'},
+          '100%': {transform: 'scale(1)'},
+        },
+      },
+      animation: {
+        click: 'click 0.3s ease-in-out',
+      },
     }
   },
   plugins: [],

@@ -14,40 +14,16 @@ import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {BasicInfo} from "../../../models/BasicInfo.jsx";
 import {Button} from "@mui/material";
+import BottomSheet from "../../../components/mobile/Bottomsheethome/BottomSheet.jsx";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import BookingBottomSheet from "../../../components/mobile/Bookingbottomsheet/Bookingbottomsheet.jsx";
 
 
 export function Home(){
-    const [customText, setCustomText] = useState(
-        [
-            { text: "00", size: "32px", color: "#33BBEA", x: 100, y: 94, font:"Sarala" },
-            { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122, font:"Sarala" }
-        ]
-    );
-    // const customText= [
-    //     { text: "08", size: "32px", color: "#33BBEA", x: 100, y: 94, font:"Sarala" },
-    //     { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122, font:"Sarala" }
-    // ]
-    const cardDetails = [
-        { color: '#FF7F50', title: 'Introduction to Spark', conductor: 'Ali', date: 'Aug 12' },
-        { color: '#32CD32', title: 'Advanced Data Clustering...', conductor: 'Ali', date: 'Aug 20' },
-        { color: '#1E90FF', title: 'Beginners guide to Azure', conductor: 'Ali', date: 'Aug 20' },
-    ];
-
-    // TODO: Whoever reads this, Delete this code ASAP
-
-    // const token = instance.
-
     const { instance, accounts } = useMsal();
-    const initialData = {
-        content: {
-            no_of_workshop_attended: 0,
-            no_of_workshop_waitlisted: 0,
-            no_of_workshop_scheduled: 0,
-            preferences: []
-        }
-    };
-    const [basicinfo, setBasicinfo] = useState(new BasicInfo(initialData));
-    // let accessToken = useRef("");
     const [accessToken, setAccessToken] = useState("");
     useEffect(() => {
         const getAccessToken = async () => {
@@ -66,6 +42,47 @@ export function Home(){
 
         getAccessToken();
     }, [instance, accounts]);
+    const [customText, setCustomText] = useState(
+        [
+            { text: "00", size: "32px", color: "#33BBEA", x: 100, y: 94, font:"Sarala" },
+            { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122, font:"Sarala" }
+        ]
+    );
+    // const customText= [
+    //     { text: "08", size: "32px", color: "#33BBEA", x: 100, y: 94, font:"Sarala" },
+    //     { text: "Attended", size: "14px", color: "#33BBEA", x: 100, y: 122, font:"Sarala" }
+    // ]
+    const cardDetails = [
+        { color: '#FF7F50', title: 'Introduction to Spark', conductor: 'Ali', date: 'Aug 12' },
+        { color: '#32CD32', title: 'Advanced Data Clustering...', conductor: 'Ali', date: 'Aug 20' },
+        { color: '#1E90FF', title: 'Beginners guide to Azure', conductor: 'Ali', date: 'Aug 20' },
+    ];
+    const [open, setOpen] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+
+    const handleClose = () => {
+        setOpen(false);
+
+    };
+
+    // TODO: Whoever reads this, Delete this code ASAP
+
+    // const token = instance.
+
+
+    const initialData = {
+        content: {
+            no_of_workshop_attended: 0,
+            no_of_workshop_waitlisted: 0,
+            no_of_workshop_scheduled: 0,
+            preferences: []
+        }
+    };
+    const [basicinfo, setBasicinfo] = useState(new BasicInfo(initialData));
+    const [scheduledarr, setscheduledarr] = useState([]);
+    const [workshops, setWorkshops] = useState([]);
+    // let accessToken = useRef("");
+
 
     // const tokenstring = await gettoken()
     // axios.defaults.headers.common['Authentication'] = 'Bearer '+accessToken;
@@ -76,10 +93,84 @@ export function Home(){
     //         ...loginRequest,
     //         account: accounts[0],
     //     }));
+    const [homeBottomSheetOpen, setHomeBottomSheetOpen] = useState(false);
+    const [homeSelectedWorkshopId, setHomeSelectedWorkshopId] = useState(null);
+
+    const handleHomeOpenBottomSheet = (id) => {
+        setHomeSelectedWorkshopId(id);
+        setHomeBottomSheetOpen(true);
+    };
+
+    const handleHomeCloseBottomSheet = () => {
+        setHomeBottomSheetOpen(false);
+        setHomeSelectedWorkshopId(null);
+    };
+
+    const handleHomeRegister = (id) => {
+        if (id) {
+            handleHomeCloseBottomSheet();
+            axios.post(import.meta.env.VITE_API_URL + "register", {
+                "workshop_id": id,
+                "status":"confirmed"
+            }).then(
+                (response) => {
+                    if (response.status === 200) {
+                        setDialogMessage(response.data.message);
+                    } else {
+                        setDialogMessage(response.data.message);
+                    }
+                    setOpen(true);
+                }
+            ).catch(error => {
+                console.error("An error occurred. Please try again.", error);
+            });
+        }
+    };
+
+    const [selectedWorkshopId, setSelectedWorkshopId] = useState(null);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+    const handleTicketClick = (id) => {
+        setSelectedWorkshopId(id);
+        setTimeout(()=>{}, 500);
+        setIsBottomSheetOpen(true);
+    };
+
+    const handleCloseBottomSheet = () => {
+        setIsBottomSheetOpen(false);
+        setSelectedWorkshopId(null);
+    };
+
+    const handleConfirmCancellation = (id) => {
+        // Send the cancellation request to the backend
+        // console.log(`Cancelling workshop with id: ${id}`);
+        // Close the bottom sheet
+        if(accessToken){
+            handleCloseBottomSheet();
+            axios.post(import.meta.env.VITE_API_URL+"cancelworkshop", {
+                "workshop_id":id
+            }).then(
+
+                (response) => {
+                    if (response.status === 200) {
+                        setDialogMessage("Cancellation successful!");
+                    } else {
+                        setDialogMessage("Cancellation failed. Please try again.");
+                    }
+                    setOpen(true);
+                }
+            ).catch(error => {
+                console.error(error);
+                setDialogMessage("An error occurred. Please try again.");
+                setOpen(true);
+            });
+        }
+
+    };
 
     useEffect(() => {
         if (accessToken) {
-            axios.get("http://localhost:8000/", {
+            // Basic info stuff
+            axios.get(import.meta.env.VITE_API_URL, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }
@@ -92,8 +183,44 @@ export function Home(){
             ).catch(error => {
                 console.error(error);
             });
+
+            // Registered workshops
+            axios.get(import.meta.env.VITE_API_URL+"registeredworkshops",{
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                }).then(
+                    (response) => {
+                        if(response.status === 200) {
+                            setscheduledarr(response.data.content)
+                        }
+                    }
+            ).catch(error => {
+                console.error(error);
+            });
+
+            // Relevant workshops
+            axios.get(import.meta.env.VITE_API_URL+"threeworkshops", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            }).then(
+                (response) => {
+                    if (response.status === 200) {
+                        // console.log(response.data.content)
+                        setWorkshops(response.data.content)
+                    }
+
+                }
+            ).catch(error => {
+                console.error(error);
+            });
+
+            // console.log("workshoplist",workshops);
+
         }
     }, [accessToken]);
+
     // console.log(basicinfo)
     const [attendedpercent, setAttendedpercent] = useState(0);
     // var gridCols = useRef(0);
@@ -182,110 +309,27 @@ export function Home(){
                 <div className="ml-2.5 mt-1/20 mb-[2.5%]">
                     <h3 className="text-lg sarala-bold dark:text-white">Upcoming</h3>
                 </div>
-                <div className="relative h-1/2 w-[99%]">
-                    <Slider {...settings}>
-                        {homemock.scheduled.map((item) => (
-                            <div key={item.id}>
-                                <TicketComponent props={item}/>
-                            </div>
-                        ))}
-                    </Slider>
 
-                </div>
+                {(!scheduledarr || scheduledarr.length === 0) ? (
+                    <h3>No workshops available</h3> // Handle empty state
+                ) : (
+                    <div className="relative h-1/2 w-[99%]">
+                        <Slider {...settings}>
+                            {scheduledarr.map((item) => (
+                                <div key={item.id} onClick={() => handleTicketClick(item.id)}>
+                                    <TicketComponent props={item} />
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+                )}
 
                 {/*/!*Chosen Preferences*!/*/}
                 <div className="ml-2.5 mt-1/20 mb-[2.5%]">
                     <h3 className="text-lg sarala-bold dark:text-white">Preferences</h3>
                 </div>
-                {/*<div className="relative grid grid-cols-2 grid-rows-2 h-1/2 w-[98%] gap-4">*/}
-                {/*    <div className="flex flex-col items-end">*/}
-                {/*        <Button*/}
-                {/*            variant="contained"*/}
-                {/*            sx={{*/}
-                {/*                borderRadius: '20px', // Adjust the value to make it more or less rounded*/}
-                {/*                padding: '10px 20px', // Adjust padding as needed*/}
-                {/*                backgroundColor: '#ffd33b', // Customize the background color*/}
-                {/*                color: '#000000', // Customize the text color*/}
-                {/*                width: '90%',*/}
-                {/*                fontSize: '100%',*/}
-                {/*                // fontFamily:'sarala-bold',*/}
-                {/*                fontWeight:800,*/}
-                {/*            }}*/}
-                {/*            >*/}
-                {/*            AI*/}
-                {/*        </Button>*/}
-                {/*        /!*<div*!/*/}
-                {/*        /!*    className="inline-flex items-center px-16 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#ffd33b] dark:text-black ">*!/*/}
-                {/*        /!*    <span>AI</span>*!/*/}
-                {/*        /!*</div>*!/*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        /!*<div*!/*/}
-                {/*        /!*    className="inline-flex items-center  px-14 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#4285f4] dark:text-black ">*!/*/}
-                {/*        /!*    <span>Cloud</span>*!/*/}
-                {/*        /!*</div>*!/*/}
-                {/*        <Button*/}
-                {/*            variant="contained"*/}
-                {/*            sx={{*/}
-                {/*                borderRadius: '20px', // Adjust the value to make it more or less rounded*/}
-                {/*                padding: '10px 20px', // Adjust padding as needed*/}
-                {/*                backgroundColor: '#ffd33b', // Customize the background color*/}
-                {/*                color: '#000000', // Customize the text color*/}
-                {/*                width: '90%',*/}
-                {/*                fontSize: '100%',*/}
-                {/*                // fontFamily:'sarala-bold',*/}
-                {/*                fontWeight:800,*/}
-                {/*            }}*/}
-                {/*        >*/}
-                {/*            Cloud*/}
-                {/*        </Button>*/}
-                {/*    </div>*/}
-                {/*    <div className="flex flex-col items-end">*/}
-                {/*        /!*<div*!/*/}
-                {/*        /!*    className="inline-flex items-center  px-14 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#ea8600] dark:text-black ">*!/*/}
-                {/*        /!*    <span>Data</span>*!/*/}
-                {/*        /!*</div>*!/*/}
-                {/*        <Button*/}
-                {/*            variant="contained"*/}
-                {/*            sx={{*/}
-                {/*                borderRadius: '20px', // Adjust the value to make it more or less rounded*/}
-                {/*                padding: '10px 20px', // Adjust padding as needed*/}
-                {/*                backgroundColor: '#ffd33b', // Customize the background color*/}
-                {/*                color: '#000000', // Customize the text color*/}
-                {/*                width: '90%',*/}
-                {/*                fontSize: '100%',*/}
-                {/*                // fontFamily:'sarala-bold',*/}
-                {/*                fontWeight:800,*/}
-                {/*            }}*/}
-                {/*        >*/}
-                {/*            Data*/}
-                {/*        </Button>*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        /!*<div*!/*/}
-                {/*        /!*    className="inline-flex items-center  px-12 py-3 rounded-full text-xl sarala-bold font-extrabold bg-[#34a853] dark:text-black ">*!/*/}
-                {/*        /!*    <span>Python</span>*!/*/}
-                {/*        /!*</div>*!/*/}
-                {/*        <Button*/}
-                {/*            variant="contained"*/}
-                {/*            sx={{*/}
-                {/*                borderRadius: '20px', // Adjust the value to make it more or less rounded*/}
-                {/*                padding: '10px 20px', // Adjust padding as needed*/}
-                {/*                backgroundColor: '#ffd33b', // Customize the background color*/}
-                {/*                color: '#000000', // Customize the text color*/}
-                {/*                width: '90%',*/}
-                {/*                fontSize: '100%',*/}
-                {/*                // fontFamily:'sarala-bold',*/}
-                {/*                fontWeight:800,*/}
-                {/*            }}*/}
-                {/*        >*/}
-                {/*            Python*/}
-                {/*        </Button>*/}
-                {/*    </div>*/}
 
-                {/*</div>*/}
-
-                <div className={`relative grid grid-cols-${gridCols} grid-rows-${gridRows} h-1/2 w-[98%] gap-4`}>
+                <div className={`relative grid grid-cols-2 grid-rows-2 h-1/2 w-[98%] gap-4`}>
                     {basicinfo.preferences.map((preference,index) => (
                         // <div key={preference.id} className="flex flex-col items-center">
                         <div key={preference.id} className={index % 2 === 0 ? "flex flex-col items-end" : ""}>
@@ -311,16 +355,52 @@ export function Home(){
                 <h3 className="text-lg sarala-bold dark:text-white">You might be interested in</h3>
                 </div>
                 <div className="p-4 space-y-4">
-                    {cardDetails.map((detail, index) => (
+
+                    {(!workshops || workshops.length === 0) ? (
+                        <h3>No workshops available</h3> // Handle empty state
+                    ) : (
+                    workshops.map((detail) => (
+                        <div onClick={() => handleHomeOpenBottomSheet(detail.id)}>
                         <ListCard
-                            key={index}
-                            color={detail.color}
-                            title={detail.title}
-                            conductor={detail.conductor}
-                            date={detail.date}
+                            key={detail.id}
+                            // color={detail.color}
+                            title={detail.workshop_name}
+                            conductor={detail.conducted_by}
+                            date={detail.workshop_date}
+
                         />
-                    ))}
+                        </div>
+                    ))
+                        )}
                 </div>
+                <BookingBottomSheet
+                    open={homeBottomSheetOpen}
+                    handleClose={handleHomeCloseBottomSheet}
+                    handleConfirm={handleHomeRegister}
+                    workshopId={homeSelectedWorkshopId}
+                />
+                <BottomSheet
+                    open={isBottomSheetOpen}
+                    handleClose={handleCloseBottomSheet}
+                    handleConfirm={handleConfirmCancellation}
+                    workshopId={selectedWorkshopId}
+                />
+                <Dialog open={open} onClose={handleClose} sx={{
+                    '& .MuiPaper-root': {
+                        backgroundColor: '#000000', // Set background color to black
+                        color: '#ffffff', // Set text color to white
+                    },
+                }}>
+                    <DialogTitle sx={{color:"#ffffff"}}>Status</DialogTitle>
+                    <DialogContent sx={{color:"#ffffff"}}>
+                        {dialogMessage}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
             </div>
 
