@@ -54,10 +54,6 @@ export const mobileRoutes = [
     element: <Workshoplist />,
   },
   {
-    path: "/profile",
-    element: <Profile />,
-  },
-  {
     path: "/qrscreen",
     element: <QrScreen />,
   },
