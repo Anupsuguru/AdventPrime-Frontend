@@ -1,7 +1,6 @@
 import { Home } from "../pages/mobile/Home/Home.jsx";
 import { Book } from "../pages/mobile/Book/Book.jsx";
 import { Workshoplist } from "../pages/mobile/Workshoplist/Workshoplist.jsx";
-import Profile from "../pages/mobile/Profile/Profile.jsx";
 import { Signin } from "../pages/mobile/Signin/Signin.jsx";
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { redirect } from "react-router-dom";
