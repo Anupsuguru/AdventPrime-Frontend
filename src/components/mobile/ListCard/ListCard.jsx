@@ -7,7 +7,7 @@ export default function ListCard({ title, conductor, date }){
     const handleClick = () => {
         setIsClicked(true);
         setTimeout(() => setIsClicked(false), 300); // Reset the click state after 300ms
-        props.onClick(); // Call the onClick prop to handle the bottom sheet opening
+        // props.onClick(); // Call the onClick prop to handle the bottom sheet opening
     };
     // console.log(props);
     var titlestr1 = title.toString()
