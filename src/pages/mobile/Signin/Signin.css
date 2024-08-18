@@ -1,0 +1,25 @@
+.spotlight {
+    position: relative;
+    overflow: hidden;
+}
+
+.spotlight::before {
+    content: '';
+    position: absolute;
+    top: -150%;
+    right: -150%;
+    bottom: -150%;
+    left: -150%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
+    transform: rotate(45deg);
+    animation: spotlight 2s linear infinite;
+}
+
+@keyframes spotlight {
+    0% {
+        transform: translate(150%, -150%) rotate(45deg);
+    }
+    100% {
+        transform: translate(-150%, 150%) rotate(45deg);
+    }
+}
