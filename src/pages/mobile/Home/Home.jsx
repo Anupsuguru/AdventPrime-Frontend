@@ -360,7 +360,7 @@ export function Home(){
                         <h3>No workshops available</h3> // Handle empty state
                     ) : (
                     workshops.map((detail) => (
-                        <div onClick={() => handleHomeOpenBottomSheet(detail.id)}>
+                        <div key={detail.id} onClick={() => handleHomeOpenBottomSheet(detail.id)}>
                         <ListCard
                             key={detail.id}
                             // color={detail.color}
